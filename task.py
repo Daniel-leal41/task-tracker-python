@@ -22,6 +22,9 @@ parser_update = subparsers.add_parser("update")
 parser_update.add_argument("id", type=int)
 parser_update.add_argument("value")
 
+parser_delete = subparsers.add_parser("delete")
+parser_delete.add_argument("id", type=int)
+
 args = parser.parse_args()
 
 if args.command == "add":
@@ -48,4 +51,12 @@ elif args.command == "update":
             print("task updated")
     with open("tasks.json", "w") as f:
         json.dump(data, f, indent=4)
-    
+
+elif args.command == "delete":
+
+    for task in data["tasks"]:
+        if args.id == task["id"]:
+            data["tasks"].remove(task)
+            with open("tasks.json", "w") as f:
+                json.dump(data, f, indent=4)
+            break
